@@ -1,0 +1,63 @@
+---
+title: "'Will You Accept This Rose?' A Brief Analysis of the Pop Culture Phenomenon 'The Bachelor'"
+author: "Madeline Finke"
+date: "March 1, 2024"
+output: 
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+    code_download: true
+---
+
+```{r, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(readr)
+```
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+contestants <- read_csv("contestants.csv")
+seasons <- read_csv("seasons.csv")
+```
+
+**The Bachelor franchise is a popular American reality television franchise. In the show, contestants vie to win the love of an eligible bachelor or bachelorette with the goal of ending up engaged. This mini project sources its data from Rachelle Perez's [The Bachelor vs. Bachelorette](https://www.kaggle.com/datasets/rachelleperez/the-bachelor-vs-the-bachelorette) dataset on Kaggle. The dataset contains data from seasons 1-24 of The Bachelor and 1-16 of The Bachelorette and does not include analysis of any of The Bachelor spinoff series. The goal of this project is to analyze trends in the two main Bachelor series among the variables contestants' age and relationship outcomes. **
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+Bachelor = contestants %>%  
+  filter(Show =="The Bachelor")
+
+Bachelorette = contestants %>% 
+  filter(Show == "The Bachelorette")
+```
+
+## AGE OF CONTESTANTS IN THE BACHELOR AND BACHELORETTE
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+summary(Bachelor$Age)
+summary(Bachelorette$Age)
+ggplot(contestants, mapping = aes(x=Age, y = as.factor(Show))) + geom_boxplot(color = "darkred") + labs(x = "Age of Contestant", y = "Show", title = "Age Distribution of Contestants in The Bachelor and Bachelorette", caption = "Source: The Bachelor vs. The Bachelorette contestants.csv")
+```
+**A boxplot was used to compare age as a quantitative variable in this dataset. It is in side-by-side format to compare the two factors of the Show variable: The Bachelor and The Bachelorette. A statistical summary was generated to aid in interpreting the plot.**
+
+**Analyzing the data, we can see that the minimum recorded age is 21 and the maximum recorded age is 36 for female Bachelor contestants, which is an upper outlier. Meanwwhile, the minimum recorded age is 22 and the maximum recorded age is 42 for male Bachelorette contestants, another upper outlier. The median age of Bachelor contestants is 26, while the median age of Bachelorette contestants is 28. Overall, the boxplot shows that women who are contestants on the Bachelor tend to be younger than men who are contestants on the Bachelorette. Both plots have varying degrees of rightward skew, indicating that the Bachelor franchise tends to feature more young contestants in their 20s and less contestants who are in their 30s or older.** 
+
+## RELATIONSHIP OUTCOMES
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+Proposal = seasons %>% 
+  filter(Proposal == "Yes")
+
+ggplot(Proposal, mapping = aes(x = `Still together`)) + geom_bar(aes(fill = Show, position = "fill")) + labs(x = "Couple Still Together?", y ="Count", title = "Relationship Outcomes of The Bachelor and Bachelorette", caption = "Source: The Bachelor vs. The Bachelorette seasons.csv") + scale_fill_manual(values= c("blue", "hotpink"))
+  
+```
+                  
+**A segmented bar chart was used to display counts of the factors of categorical variable Still Together: Yes or No. Blue fill was used within the segmented bars to signify couples from The Bachelor and hot pink fill was used within the segmented bars to signify couples from The Bachelorette.**  
+
+**Out of the 29 proposals recorded from The Bachelor and Bachelorette, 24 of the couples are no longer together. Only five couples from the two series who got engaged are still together, with four being from The Bachelorette and one being from The Bachelor. This shows that while The Bachelor franchise claims that contestants can find lifelong love on the two main shows, the occurrence is actually pretty rare.** 
+
+
+
+
+
+
+
